@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#0b2530" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#07171d" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="FirstNotice turns unstructured insurance claim intake into clear, structured claim information for carrier teams." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <title>FirstNotice | AI-assisted claims intake</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #102d37;
+      --ink-2: #29434c;
+      --muted: #5a7077;
+      --page: #f7faf9;
+      --surface: #ffffff;
+      --soft: #e9f2ef;
+      --line: #cbdcd8;
+      --teal: #0b776e;
+      --teal-dark: #07574f;
+      --teal-pale: #d6eee8;
+      --orange: #ef7d45;
+      --orange-pale: #ffeadf;
+      --navy: #0b2530;
+      --navy-2: #123743;
+      --white: #ffffff;
+      --shadow: 0 22px 60px rgba(19, 58, 67, .13);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eef8f5;
+        --ink-2: #c6d8d5;
+        --muted: #9fb5b3;
+        --page: #07171d;
+        --surface: #0c2229;
+        --soft: #112f35;
+        --line: #26464b;
+        --teal: #6bc9b9;
+        --teal-dark: #8adaca;
+        --teal-pale: #163e3d;
+        --orange: #ff9a64;
+        --orange-pale: #4b2c22;
+        --navy: #051318;
+        --navy-2: #0b292f;
+        --white: #f7fffd;
+        --shadow: 0 22px 65px rgba(0, 0, 0, .35);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: "Public Sans", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar {
+      position: relative;
+      z-index: 10;
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 28px;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--white); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1;
+      transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+    }
+    .btn:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .btn-primary { background: var(--orange); color: #23120a; }
+    .btn-primary:hover { background: #ff9563; transform: translateY(-1px); }
+    .btn-ghost { border-color: rgba(255,255,255,.35); color: var(--white); }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+    .btn svg { width: 17px; height: 17px; flex: 0 0 auto; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+      color: var(--white);
+      padding: 84px 0 96px;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--teal) 0 67%, var(--orange) 67% 100%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(440px, .9fr);
+      gap: clamp(48px, 8vw, 100px);
+      align-items: center;
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 22px;
+      color: #83d9c8;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: currentColor; }
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: .99;
+      letter-spacing: -.045em;
+      font-weight: 700;
+    }
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 620px;
+      margin: 28px 0 33px;
+      color: rgba(255,255,255,.75);
+      font-size: clamp(18px, 2vw, 21px);
+      line-height: 1.55;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { margin-top: 22px; color: rgba(255,255,255,.52); font-size: 13px; }
+
+    .intake-card {
+      position: relative;
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .intake-card::before {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: -90px;
+      top: -110px;
+      border: 28px solid var(--teal-pale);
+      border-radius: 50%;
+    }
+    .card-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--line);
+      background: var(--soft);
+    }
+    .card-title { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+    .status { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--teal-dark); }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+    .card-body { position: relative; padding: 22px; }
+    .source {
+      padding: 14px 16px;
+      background: var(--page);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .source-label, .output-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .process-line { display: flex; align-items: center; gap: 10px; padding: 14px 2px; }
+    .process-line span { flex: 1; height: 1px; background: var(--line); }
+    .process-line svg { width: 18px; color: var(--teal); }
+    .output {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .field { min-height: 74px; padding: 12px 13px; background: var(--teal-pale); border-radius: 7px; }
+    .field strong { display: block; font-size: 14px; line-height: 1.3; }
+    .field.wide { grid-column: 1 / -1; min-height: auto; }
+    .field.wide strong { font-weight: 500; color: var(--ink-2); }
+    .extract-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .extract-foot code { color: var(--teal-dark); font-family: "IBM Plex Mono", monospace; font-size: 10px; }
+
+    section { padding: 96px 0; }
+    .section-head { max-width: 700px; margin-bottom: 50px; }
+    .section-head .eyebrow { color: var(--teal); margin-bottom: 18px; }
+    h2 {
+      margin: 0;
+      font-size: clamp(34px, 4.4vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+    .section-head > p:not(.eyebrow) { margin: 19px 0 0; color: var(--muted); font-size: 18px; max-width: 640px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .step { padding: 32px 30px 36px 0; }
+    .step + .step { padding-left: 30px; border-left: 1px solid var(--line); }
+    .step-num { display: block; margin-bottom: 30px; color: var(--orange); font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600; }
+    .step h3 { margin: 0 0 11px; font-size: 20px; line-height: 1.25; }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    .outcomes { background: var(--soft); }
+    .outcome-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 72px; align-items: start; }
+    .outcome-intro { position: sticky; top: 28px; }
+    .outcome-intro p { margin: 21px 0 0; color: var(--muted); font-size: 17px; }
+    .outcome-list { border-top: 1px solid var(--line); }
+    .outcome {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 20px;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .outcome-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      background: var(--surface);
+      color: var(--teal);
+      border-radius: 7px;
+    }
+    .outcome-icon svg { width: 21px; height: 21px; }
+    .outcome h3 { margin: 0 0 7px; font-size: 19px; }
+    .outcome p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    .fit-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 70px; align-items: center; }
+    .fit-copy p { color: var(--muted); font-size: 17px; }
+    .fit-points { margin-top: 30px; display: grid; gap: 18px; }
+    .fit-point { display: grid; grid-template-columns: 22px 1fr; gap: 13px; align-items: start; }
+    .fit-point svg { width: 20px; color: var(--teal); margin-top: 3px; }
+    .fit-point strong { display: block; margin-bottom: 2px; }
+    .fit-point span { color: var(--muted); font-size: 14px; }
+    .routing-panel {
+      padding: 30px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+    .routing-panel h3 { margin: 0 0 23px; font-size: 18px; }
+    .route-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 0; border-top: 1px solid rgba(255,255,255,.13); }
+    .route-row small { display: block; color: rgba(255,255,255,.48); font-size: 11px; font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .06em; }
+    .route-row strong { font-size: 14px; }
+    .route-tag { align-self: center; padding: 4px 8px; border-radius: 4px; background: rgba(107,201,185,.15); color: #83d9c8; font: 600 10px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; }
+
+    .faq { padding-top: 24px; }
+    details { border-top: 1px solid var(--line); }
+    details:last-child { border-bottom: 1px solid var(--line); }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 0;
+      font-weight: 700;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--teal); font: 500 24px/1 "IBM Plex Mono", monospace; }
+    details[open] summary::after { content: "−"; }
+    details p { max-width: 760px; margin: -4px 0 24px; color: var(--muted); }
+
+    .cta-section { padding-top: 28px; }
+    .cta-panel {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: clamp(34px, 6vw, 64px);
+      background: var(--teal-dark);
+      color: #f6fffd;
+      border-radius: 12px;
+    }
+    .cta-panel::before {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      right: -130px;
+      top: -140px;
+      border: 32px solid rgba(255,255,255,.1);
+      border-radius: 50%;
+    }
+    .cta-panel h2 { position: relative; font-size: clamp(32px, 4vw, 48px); max-width: 700px; }
+    .cta-panel p { position: relative; margin: 14px 0 0; color: rgba(255,255,255,.72); max-width: 680px; }
+    .cta-panel .btn { position: relative; white-space: nowrap; }
+    .demo-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+    .demo-actions .btn-secondary { border-color: rgba(255,255,255,.45); color: #f6fffd; background: transparent; }
+    .demo-actions .btn-secondary:hover { border-color: #f6fffd; background: rgba(255,255,255,.08); }
+    .copy-status { position: relative; grid-column: 1 / -1; min-height: 22px; margin: 0; color: rgba(255,255,255,.8); font-size: 13px; text-align: right; }
+
+    @media (prefers-color-scheme: dark) {
+      .cta-panel { color: #07171d; }
+      .cta-panel p { color: #16323a; }
+      .demo-actions .btn-secondary { border-color: rgba(7,23,29,.5); color: #07171d; }
+      .demo-actions .btn-secondary:hover { border-color: #07171d; background: rgba(7,23,29,.08); }
+      .copy-status { color: #16323a; }
+    }
+
+    footer { padding: 30px 0 calc(30px + env(safe-area-inset-bottom)); color: var(--muted); font-size: 13px; }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer-row a { color: var(--teal-dark); font-weight: 700; text-decoration: none; }
+
+    @media (max-width: 880px) {
+      .hero { padding-top: 64px; }
+      .hero-grid, .fit-grid, .outcome-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 56px; }
+      .intake-card { width: min(600px, 100%); transform: none; }
+      .outcome-grid { gap: 38px; }
+      .outcome-intro { position: static; }
+      .fit-grid { gap: 46px; }
+      .cta-panel { grid-template-columns: 1fr; }
+      .cta-panel .btn { justify-self: start; }
+      .demo-actions { justify-content: flex-start; }
+      .copy-status { text-align: left; }
+    }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 32px, 1160px); }
+      .nav { min-height: 64px; justify-content: space-between; }
+      .nav-links { gap: 18px; }
+      .nav-links a:nth-child(2) { display: none; }
+      .nav .btn { min-height: 40px; padding-inline: 13px; }
+      .hero { padding: 55px 0 72px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      .hero-copy > p:not(.eyebrow) { font-size: 17px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn { width: 100%; }
+      .card-body { padding: 16px; }
+      .output { grid-template-columns: 1fr; }
+      .field.wide { grid-column: auto; }
+      section { padding: 72px 0; }
+      .steps { grid-template-columns: 1fr; }
+      .step, .step + .step { padding: 25px 0 28px; border-left: 0; }
+      .step + .step { border-top: 1px solid var(--line); }
+      .step-num { margin-bottom: 13px; }
+      .outcome { grid-template-columns: 38px 1fr; gap: 14px; }
+      .outcome-icon { width: 36px; height: 36px; }
+      .routing-panel { padding: 24px 20px; }
+      .cta-panel { padding: 34px 24px; }
+      .cta-panel .btn { width: 100%; }
+      .demo-actions { width: 100%; }
+      .footer-row { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#outcomes">Outcomes</a>
+      </div>
+      <a class="btn btn-primary" href="#demo">Request a demo</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">AI-assisted claims intake</p>
+          <h1>Make first notice useful from the first minute.</h1>
+          <p>FirstNotice turns an unstructured claim description into clear, structured information—so carrier teams can understand, review, and route new claims with less manual sorting.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">
+              Request a demo
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <p class="hero-note">Built for the first mile of the claims workflow.</p>
+        </div>
+
+        <div class="intake-card" aria-label="Example of claim information structured by FirstNotice">
+          <div class="card-bar">
+            <span class="card-title">NEW CLAIM INTAKE</span>
+            <span class="status">Structured</span>
+          </div>
+          <div class="card-body">
+            <div class="source">
+              <span class="source-label">Incoming description</span>
+              A driver reported rear-end damage after being struck while stopped at an intersection. No injuries reported.
+            </div>
+            <div class="process-line" aria-hidden="true">
+              <span></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 16l5 5 5-5"/></svg>
+              <span></span>
+            </div>
+            <div class="output">
+              <div class="field">
+                <span class="output-label">Claim type</span>
+                <strong>Auto — collision</strong>
+              </div>
+              <div class="field">
+                <span class="output-label">Injury status</span>
+                <strong>None reported</strong>
+              </div>
+              <div class="field wide">
+                <span class="output-label">Summary</span>
+                <strong>Rear-end incident involving a stationary vehicle; reported property damage only.</strong>
+              </div>
+            </div>
+            <div class="extract-foot">
+              <span>Ready for team review</span>
+              <code>INTAKE → STRUCTURE</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">One clear path</p>
+          <h2>From intake narrative to an organized claim.</h2>
+          <p>FirstNotice adds a focused AI step between receiving a claim and sending it into the next stage of your workflow.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-num">01 / RECEIVE</span>
+            <h3>Capture the claim description</h3>
+            <p>Start with the information provided during first notice—before someone has to manually organize it.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">02 / UNDERSTAND</span>
+            <h3>Classify and extract</h3>
+            <p>AI identifies the claim type, pulls out key details, and creates a concise summary for review.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">03 / HAND OFF</span>
+            <h3>Return structured results</h3>
+            <p>Your team receives consistent information that is easier to review and move to the right next step.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="outcomes" id="outcomes">
+      <div class="wrap outcome-grid">
+        <div class="outcome-intro">
+          <p class="eyebrow">A cleaner first mile</p>
+          <h2>Give adjusters better information to start with.</h2>
+          <p>The goal is simple: reduce the friction between a claimant's words and the organized information a carrier team needs.</p>
+        </div>
+        <div class="outcome-list">
+          <article class="outcome">
+            <div class="outcome-icon">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16M4 12h10M4 19h13"/></svg>
+            </div>
+            <div>
+              <h3>More consistent intake</h3>
+              <p>Turn free-form descriptions into the same useful set of fields, regardless of how the claim was written.</p>
+            </div>
+          </article>
+          <article class="outcome">
+            <div class="outcome-icon">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5M6 12h12M6 16h12"/></svg>
+            </div>
+            <div>
+              <h3>Faster initial review</h3>
+              <p>Surface the claim type, reported details, and a short summary without making the reviewer hunt through a narrative.</p>
+            </div>
+          </article>
+          <article class="outcome">
+            <div class="outcome-icon">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h11M15 7l-3-3M15 7l-3 3M20 17H9M9 17l3-3M9 17l3 3"/></svg>
+            </div>
+            <div>
+              <h3>Clearer handoffs</h3>
+              <p>Prepare claim information in a structured form that supports consistent routing and team review.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap fit-grid">
+        <div class="fit-copy">
+          <p class="eyebrow">Focused by design</p>
+          <h2>A practical AI layer—not a replacement for claims judgment.</h2>
+          <p>FirstNotice is designed to organize intake, while your team remains in control of review, decisions, and the rest of the claim lifecycle.</p>
+          <div class="fit-points">
+            <div class="fit-point">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
+              <div><strong>Human review stays central</strong><span>Structured output supports your team; it does not make claim decisions.</span></div>
+            </div>
+            <div class="fit-point">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
+              <div><strong>Start with one workflow</strong><span>Prove value at intake before expanding into deeper claims operations.</span></div>
+            </div>
+            <div class="fit-point">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
+              <div><strong>Built for operational clarity</strong><span>Keep the output concise, structured, and ready for the next person in line.</span></div>
+            </div>
+          </div>
+        </div>
+        <aside class="routing-panel" aria-label="Example structured claim handoff">
+          <h3>Example structured handoff</h3>
+          <div class="route-row"><div><small>Line of business</small><strong>Personal auto</strong></div><span class="route-tag">Captured</span></div>
+          <div class="route-row"><div><small>Loss type</small><strong>Collision</strong></div><span class="route-tag">Classified</span></div>
+          <div class="route-row"><div><small>Reported injury</small><strong>No</strong></div><span class="route-tag">Extracted</span></div>
+          <div class="route-row"><div><small>Next step</small><strong>Team review</strong></div><span class="route-tag">Ready</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="faq" aria-labelledby="faq-heading">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Questions</p>
+          <h2 id="faq-heading">A straightforward place to begin.</h2>
+        </div>
+        <details>
+          <summary>What does FirstNotice do?</summary>
+          <p>It takes a claim description, identifies the type of claim, extracts key reported details, and returns a concise structured summary for a carrier team's review.</p>
+        </details>
+        <details>
+          <summary>Does it make claim decisions?</summary>
+          <p>No. FirstNotice is designed to support intake organization. Claim review, coverage decisions, and professional judgment stay with the carrier team.</p>
+        </details>
+        <details>
+          <summary>Where does it fit in the workflow?</summary>
+          <p>At the beginning: after claim information is received and before it moves into review, routing, or the carrier's downstream claim process.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="cta-section" id="demo">
+      <div class="wrap">
+        <div class="cta-panel">
+          <div>
+            <h2>See what structured intake could look like for your team.</h2>
+            <p>Email <strong>tberhan2@gmail.com</strong> with your company name and a preferred time for a focused product demonstration.</p>
+          </div>
+          <div class="demo-actions">
+            <a class="btn btn-primary" href="https://mail.google.com/mail/u/0/?to=tberhan2%40gmail.com&amp;su=FirstNotice+demo+request&amp;body=Hello%2C%0A%0AI%27d+like+to+request+a+FirstNotice+demo.%0A%0AName%3A+%0ACompany+name%3A+%0APreferred+demo+time%3A+%0APhone+number%3A+%0A%0AThank+you.&amp;tf=cm" target="_blank" rel="noopener">
+              Compose in Gmail
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+            </a>
+            <button class="btn btn-secondary" type="button" id="copy-demo-email">Copy ready-to-send request</button>
+            <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <span>FirstNotice · AI-assisted insurance claims intake</span>
+      <a href="mailto:tberhan2@gmail.com">tberhan2@gmail.com</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var copyButton = document.getElementById('copy-demo-email');
+      var status = document.getElementById('copy-status');
+      var email = 'tberhan2@gmail.com';
+      var request = 'To: ' + email + '\nSubject: FirstNotice demo request\n\nHello,\n\nI\'d like to request a FirstNotice demo.\n\nName: \nCompany name: \nPreferred demo time: \nPhone number: \n\nThank you.';
+
+      function showCopied() {
+        status.textContent = 'Request copied — paste it into any email app and send it to ' + email + '.';
+        copyButton.textContent = 'Request copied';
+      }
+
+      function fallbackCopy() {
+        var field = document.createElement('textarea');
+        field.value = request;
+        field.setAttribute('readonly', '');
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        document.body.appendChild(field);
+        field.select();
+        var copied = document.execCommand('copy');
+        document.body.removeChild(field);
+        if (copied) showCopied();
+        else status.textContent = 'Email ' + email + ' with your name, company, preferred demo time, and phone number.';
+      }
+
+      copyButton.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(request).then(showCopied).catch(fallbackCopy);
+        } else {
+          fallbackCopy();
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
